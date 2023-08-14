@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 按钮 -->
+    <item name="btn_mop" type="id" />
+    <item name="btn_takeoff" type="id" />
+    <item name="btn_pause" type="id" />
+    <item name="btn_blade1" type="id" />
+    <item name="btn_blade2" type="id" />
+    <item name="btn_blade3" type="id" />
+    <!-- 需要显示的状态数据-->
+    <item name="tv_title1" type="id" />
+    <item name="tv_status1" type="id" />
+    <item name="tv_title2" type="id" />
+    <item name="tv_status2" type="id" />
+    <item name="tv_title3" type="id" />
+    <item name="tv_status3" type="id" />
+    <item name="tv_title4" type="id" />
+    <item name="tv_status4" type="id" />
+    <item name="tv_title5" type="id" />
+    <item name="tv_status5" type="id" />
+    <item name="tv_title6" type="id" />
+    <item name="tv_status6" type="id" />
+    <item name="hi_fly" type="id" />
+    <!-- MOP 管道item -->
+    <item name="et_file_name" type="id"/>
+    <item name="tv_name" type="id"/>
+    <item name="tv_download" type="id"/>
+    <item name="tv_upload" type="id"/>
+    <item name="tv_disconnect" type="id"/>
+    <item name="switch_auto_download" type="id"/>
+    <item name="view_border" type="id"/>
+    <item name="tv_download_log" type="id"/>
+    <item name="tv_upload_log" type="id"/>
+    <item name="final_force" type="id"/>
+    <item name="final_force2" type="id"/>
+    <item name="final_force3" type="id"/>
+
+    <!-- MOP 连接页面-->
+    <item name="ll_top" type="id"/>
+    <item name="et_channel_key" type="id"/>
+    <item name="rg_mop_type" type="id"/>
+    <item name="rb_on_board" type="id"/>
+    <item name="rb_payload" type="id"/>
+    <item name="cb_reliable" type="id"/>
+    <item name="cb_log" type="id"/>
+    <item name="btn_create" type="id"/>
+    <item name="rc_pipeline" type="id"/>
+
+</resources>

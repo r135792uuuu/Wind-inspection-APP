@@ -1,0 +1,48 @@
+<resources>
+    <!-- 连接页面 主页面 -->
+    <string name="app_name_hi">HI FLY</string>
+    <string name="action_settings">Settings</string>
+    <string name="disconnected">Disconnected</string>
+    <string name="product_information">连接产品型号</string>
+    <string name="connection_loose">Status: No Product Connected</string>
+    <string name="model_not_available">程序未准备好</string>
+    <string name="push_info">Push Info</string>
+    <string name="sdk_version">DJI SDK Version: %1$s</string>
+    <string name="hi_version">APP 版本: %1$s</string>
+
+    <!-- 默认页面 -->
+    <string name="tv_title1_chEncode">速度:(m/s)</string>
+    <string name="tv_status1_chEncode">0.0</string>
+    <string name="tv_title2_chEncode">测试参数:</string>
+    <string name="tv_status2_chEncode">0.0</string>
+    <string name="tv_title3_chEncode">参数3:</string>
+    <string name="tv_status3_chEncode">0.0</string>
+    <string name="tv_title4_chEncode">参数4:</string>
+    <string name="tv_status4_chEncode">0.0</string>
+    <string name="tv_title5_chEncode">参数5:</string>
+    <string name="tv_status5_chEncode">0.0</string>
+    <string name="tv_title6_chEncode">参数6:</string>
+    <string name="tv_status6_chEncode">0.0</string>
+
+    <!-- MOP 通道item页面-->
+    <string name="tv_et_file_name">输入参数</string>
+    <string name="tv_name">管道id</string>
+    <string name="tv_download">download</string>
+    <string name="tv_upload">upload</string>
+    <string name="tv_disconnect">disconnect</string>
+    <string name="tv_download_log">download_log</string>
+    <string name="tv_upload_log">upload_log</string>
+    <string name="final_force">接收数据1：</string>
+    <string name="final_force2">接收数据2：</string>
+    <string name="final_force3">接收数据3：</string>
+
+    <!-- MOP 连接页面-->
+    <string name="btn_create">开始连接</string>
+    <string name="btn_mop_back">点击返回</string>
+    <string name="cb_reliable">传输文件</string>
+    <string name="cb_log">保存日志记录</string>
+    <string name="rb_on_board">无人机</string>
+    <string name="rb_payload">负载设备</string>
+    <string name="et_channel_key">通信通道id</string>
+
+</resources>

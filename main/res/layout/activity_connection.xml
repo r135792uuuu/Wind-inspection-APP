@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+    <!-- 这里从vertical改成horizontal了要注意 有问题回退-->
+    <!-- 背景视频页面需要relativelayout -->
+
+    <include layout="@layout/video_view_background"/>
+
+    <TextView
+        android:id="@+id/text_connection_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="当前状态：未连接飞机"
+        android:textColor="@android:color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_alignBottom="@+id/text_product_info"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="89dp" />
+
+    <TextView
+        android:id="@+id/text_product_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="270dp"
+        android:text="@string/product_information"
+        android:textColor="@android:color/black"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:textStyle="bold"
+        />
+
+    <TextView
+        android:id="@+id/text_model_available"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:layout_marginTop="300dp"
+        android:text="@string/model_not_available"
+        android:textSize="15sp"/>
+
+    <Button
+        android:id="@+id/btn_open"
+        android:layout_width="150dp"
+        android:layout_height="55dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="350dp"
+        android:background="@drawable/round_btn"
+        android:text="点我使用"
+        android:textColor="@color/colorWhite"
+        android:textSize="20sp"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="430dp"
+        android:text="@string/hi_version"
+        android:textSize="15sp"
+        android:id="@+id/textView2"
+        android:layout_alignParentTop="true"
+        android:layout_margin="120dp"/>
+
+    <TextView
+        android:id="@+id/trade_marker_View"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:text="HI FLY"
+        android:textAppearance="?android:attr/textAppearanceButton"
+        android:textColorLink="@color/background_blue"
+        android:textColor="@color/black_overlay"
+        android:textSize="25sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="65dp"
+        android:text="连接页面"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/black_overlay"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>
