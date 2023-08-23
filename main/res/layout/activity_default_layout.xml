@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_blue"
+    android:orientation="horizontal"
+    tools:context=".MainActivity">
+
+    <!-- Widget to see first person view (FPV) -->
+    <dji.ux.widget.FPVWidget
+        android:id="@+id/fpv_widget"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <dji.ux.widget.FPVOverlayWidget
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </dji.ux.widget.FPVOverlayWidget>
+
+    <TextView
+        android:id="@+id/hi_fly"
+        android:text="@string/app_name_hi"
+        android:textSize="25sp"
+        android:textColor="@color/white"
+        android:textStyle="italic"
+        android:layout_marginTop="35dp"
+        android:layout_marginStart="8dp"
+        android:layout_width="86dp"
+        android:layout_height="34dp"/>
+
+    <!-- 顶部组件栏：状态、网络、连接、GPS等 -->
+    <LinearLayout
+        android:id="@+id/signal"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:background="@color/dark_gray"
+        android:orientation="horizontal">
+
+        <dji.ux.widget.PreFlightStatusWidget
+            android:id="@+id/status"
+            android:layout_width="238dp"
+            android:layout_height="25dp"/>
+
+        <dji.ux.widget.FlightModeWidget
+            android:layout_width="103dp"
+            android:layout_height="22dp"/>
+
+        <dji.ux.widget.GPSSignalWidget
+            android:layout_width="44dp"
+            android:layout_height="22dp"/>
+
+        <dji.ux.widget.VisionWidget
+            android:layout_width="22dp"
+            android:layout_height="22dp"/>
+
+        <dji.ux.widget.RemoteControlSignalWidget
+            android:layout_width="38dp"
+            android:layout_height="22dp"/>
+
+        <dji.ux.widget.VideoSignalWidget
+            android:layout_width="38dp"
+            android:layout_height="22dp"/>
+
+        <dji.ux.widget.WiFiSignalWidget
+            android:layout_width="32dp"
+            android:layout_height="25dp"/>
+
+        <dji.ux.widget.BatteryWidget
+            android:layout_width="96dp"
+            android:layout_height="22dp"
+            custom:excludeView="singleVoltage"/>
+
+        <dji.ux.widget.ConnectionWidget
+            android:layout_marginTop="3dp"
+            android:layout_width="18dp"
+            android:layout_height="18dp"/>
+    </LinearLayout>
+
+    <!-- 相机参数组件显示栏：白平衡、变焦等 -->
+    <LinearLayout
+        android:id="@+id/camera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/signal"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="12dp"
+        android:background="@color/dark_gray"
+        android:orientation="horizontal">
+
+        <dji.ux.widget.AutoExposureLockWidget
+            android:layout_width="25dp"
+            android:layout_height="25dp"/>
+
+        <dji.ux.widget.FocusExposureSwitchWidget
+            android:layout_width="25dp"
+            android:layout_height="25dp"/>
+
+        <dji.ux.widget.FocusModeWidget
+            android:layout_width="25dp"
+            android:layout_height="25dp"/>
+
+        <dji.ux.widget.config.CameraConfigISOAndEIWidget
+            android:layout_width="50dp"
+            android:layout_height="25dp"/>
+
+        <dji.ux.widget.config.CameraConfigShutterWidget
+            android:layout_width="50dp"
+            android:layout_height="25dp"/>
+
+        <dji.ux.widget.config.CameraConfigApertureWidget
+            android:layout_width="50dp"
+            android:layout_height="25dp"/>
+
+        <dji.ux.widget.config.CameraConfigEVWidget
+            android:layout_width="50dp"
+            android:layout_height="25dp"/>
+
+        <dji.ux.widget.config.CameraConfigWBWidget
+            android:layout_width="50dp"
+            android:layout_height="25dp"/>
+
+        <dji.ux.widget.config.CameraConfigStorageWidget
+            android:layout_width="108dp"
+            android:layout_height="25dp"/>
+
+    </LinearLayout>
+
+    <dji.ux.widget.RemainingFlightTimeWidget
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="18dp"
+        android:layout_width="match_parent"
+        android:background="@color/transparent"
+        android:layout_height="20dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:padding="12dp">
+
+        <dji.ux.widget.dashboard.CompassWidget
+            android:id="@+id/compass"
+            android:layout_width="105dp"
+            android:layout_height="96dp"
+            android:layout_marginStart="-5dp"
+            android:layout_marginBottom="-4dp"/>
+        <!--不要指南针的侧边栏  换成MOP传输过来的数据-->
+<!--                <dji.ux.widget.dashboard.DashboardWidget-->
+<!--                    android:id="@+id/Compass"-->
+<!--                    android:layout_width="405dp"-->
+<!--                    android:layout_height="91dp"-->
+<!--                    android:layout_marginRight="12dp"/>-->
+        <!-- MOP 传过来的各参数 -->
+        <TextView
+            android:id="@+id/tv_title1"
+            android:text="@string/tv_title1_chEncode"
+            android:textSize="19sp"
+            android:layout_width="100dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="-8dp"
+            android:textColor="@color/white_80_percent"/>
+        <TextView
+            android:id="@+id/tv_status1"
+            android:text="@string/tv_status1_chEncode"
+            android:textSize="19sp"
+            android:layout_width="75dp"
+            android:layout_height="32dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginTop="-8dp"
+            android:textColor="@color/white_80_percent"/>
+        <TextView
+            android:id="@+id/tv_title2"
+            android:text="@string/tv_title2_chEncode"
+            android:textSize="19sp"
+            android:layout_width="100dp"
+            android:layout_height="32dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="-8dp"
+            android:textColor="@color/white_80_percent"/>
+        <TextView
+            android:id="@+id/tv_status2"
+            android:text="@string/tv_status2_chEncode"
+            android:textSize="19sp"
+            android:layout_width="75dp"
+            android:layout_height="32dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginTop="-8dp"
+            android:textColor="@color/white_80_percent"/>
+        <TextView
+            android:id="@+id/tv_title3"
+            android:text="@string/tv_title3_chEncode"
+            android:textSize="19sp"
+            android:layout_width="75dp"
+            android:layout_height="32dp"
+            android:layout_marginLeft="-308dp"
+            android:layout_marginTop="30dp"
+            android:textColor="@color/white_80_percent"/>
+        <TextView
+            android:id="@+id/tv_status3"
+            android:text="@string/tv_status3_chEncode"
+            android:textSize="19sp"
+            android:layout_width="75dp"
+            android:layout_height="32dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginTop="30dp"
+            android:textColor="@color/white_80_percent"/>
+        <TextView
+            android:id="@+id/tv_title4"
+            android:text="@string/tv_title4_chEncode"
+            android:textSize="19sp"
+            android:layout_width="75dp"
+            android:layout_height="32dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="30dp"
+            android:textColor="@color/white_80_percent"/>
+        <TextView
+            android:id="@+id/tv_status4"
+            android:text="@string/tv_status4_chEncode"
+            android:textSize="19sp"
+            android:layout_width="75dp"
+            android:layout_height="32dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginTop="30dp"
+            android:textColor="@color/white_80_percent"/>
+        <TextView
+            android:id="@+id/tv_title5"
+            android:text="@string/tv_title5_chEncode"
+            android:textSize="19sp"
+            android:layout_width="75dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="-308dp"
+            android:layout_marginTop="65dp"
+            android:textColor="@color/white_80_percent"/>
+        <TextView
+            android:id="@+id/tv_status5"
+            android:text="@string/tv_status5_chEncode"
+            android:textSize="19sp"
+            android:layout_width="75dp"
+            android:layout_height="32dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginTop="65dp"
+            android:textColor="@color/white_80_percent"/>
+        <TextView
+            android:id="@+id/tv_title6"
+            android:text="@string/tv_title6_chEncode"
+            android:textSize="19sp"
+            android:layout_width="75dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="65dp"
+            android:textColor="@color/white_80_percent"/>
+        <TextView
+            android:id="@+id/tv_status6"
+            android:text="@string/tv_status6_chEncode"
+            android:textSize="19sp"
+            android:layout_width="75dp"
+            android:layout_height="32dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginTop="65dp"
+            android:textColor="@color/white_80_percent"/>
+
+    </LinearLayout>
+
+
+    <!--基础状态按钮 -->
+    <LinearLayout
+        android:layout_width="72dp"
+        android:layout_height="196dp"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="12dp"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btn_mode"
+            android:layout_width="72dp"
+            android:layout_height="35dp"
+            android:layout_marginBottom="15dp"
+            android:background="#FAFFF0"
+            android:text="模式选择"
+            android:textColor="#292421"
+            android:textSize="17sp" />
+
+        <Button
+            android:id="@+id/btn_mop"
+            android:layout_width="72dp"
+            android:layout_height="35dp"
+            android:layout_marginBottom="15dp"
+            android:background="#FAFFF0"
+            android:text="通信"
+            android:textColor="#292421"
+            android:textSize="17sp" />
+
+        <Button
+            android:id="@+id/btn_takeoff"
+            android:layout_width="72dp"
+            android:layout_height="35dp"
+            android:layout_marginBottom="15dp"
+            android:background="#FAFFF0"
+            android:text="起飞"
+            android:textColor="#292421"
+            android:textSize="17sp" />
+
+        <Button
+            android:id="@+id/btn_pause"
+            android:layout_width="72dp"
+            android:layout_height="35dp"
+            android:layout_marginBottom="40dp"
+            android:background="#FAFFF0"
+            android:text="中断"
+            android:textColor="#292421"
+            android:textSize="17sp" />
+
+        <!-- 用自己的降落替代，后面中国可以强制降落或者不要-->
+        <!--dji.ux.widget.ReturnHomeWidget
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="12dp"/-->
+    </LinearLayout>
+
+    <!-- 中间选择叶片的三个隐藏按钮-->
+    <LinearLayout
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="230dp"
+        android:layout_marginTop="220dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_blade1"
+            android:layout_width="72dp"
+            android:layout_height="50dp"
+            android:text="C1"
+            android:textSize="17sp"
+            android:textColor="#292421"
+            android:layout_marginRight="12dp"/>
+        <Button
+            android:id="@+id/btn_blade2"
+            android:layout_width="72dp"
+            android:layout_height="50dp"
+            android:text="C2"
+            android:textSize="17sp"
+            android:textColor="#292421"
+            android:layout_marginRight="15dp"/>
+        <Button
+            android:id="@+id/btn_blade3"
+            android:layout_width="72dp"
+            android:layout_height="50dp"
+            android:text="C3"
+            android:textSize="17sp"
+            android:textColor="#292421"
+            android:layout_marginRight="12dp"/>
+
+    </LinearLayout>
+
+
+    <dji.ux.widget.controls.CameraControlsWidget
+        android:id="@+id/CameraCapturePanel"
+        android:layout_width="55dp"
+        android:layout_height="213dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/camera" />
+
+
+    <dji.ux.panel.CameraSettingExposurePanel
+        android:id="@+id/CameraExposureMode"
+        android:layout_width="170dp"
+        android:layout_height="263dp"
+        android:layout_below="@id/camera"
+        android:layout_marginLeft="360dp"
+        android:layout_toLeftOf="@+id/CameraCapturePanel"
+        android:background="@color/transparent"
+        android:gravity="center"
+        android:visibility="invisible" />
+
+    <dji.ux.panel.CameraSettingAdvancedPanel
+        android:id="@+id/CameraAdvancedSetting"
+        android:layout_width="170dp"
+        android:layout_height="263dp"
+        android:layout_below="@id/camera"
+        android:layout_marginLeft="360dp"
+        android:layout_toLeftOf="@+id/CameraCapturePanel"
+        android:background="@color/transparent"
+        android:gravity="center"
+        android:visibility="invisible" />
+
+    <Button
+        android:id="@+id/btn_mediaManager"
+        android:layout_width="38dp"
+        android:layout_height="30dp"
+        android:layout_alignStart="@+id/CameraCapturePanel"
+        android:layout_below="@id/CameraCapturePanel"
+        android:background="@drawable/playback"
+        android:visibility="visible" />
+
+    <!-- Pre-flight checklist panel -->
+    <dji.ux.panel.PreFlightCheckListPanel
+        android:id="@+id/PreflightCheckView"
+        android:layout_width="400dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/signal"
+        android:visibility="gone"/>
+
+
+</RelativeLayout>
