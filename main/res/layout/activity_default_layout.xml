@@ -22,14 +22,16 @@
 
     <TextView
         android:id="@+id/hi_fly"
-        android:text="@string/app_name_hi"
-        android:textSize="25sp"
-        android:textColor="@color/white"
-        android:textStyle="italic"
+        android:text="视角切换"
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        android:background="#FAFFF0"
+        android:textStyle="bold"
+        android:gravity="center"
         android:layout_marginTop="35dp"
-        android:layout_marginStart="8dp"
-        android:layout_width="86dp"
-        android:layout_height="34dp"/>
+        android:layout_marginStart="12dp"
+        android:layout_width="80dp"
+        android:layout_height="40dp"/>
 
     <!-- 顶部组件栏：状态、网络、连接、GPS等 -->
     <LinearLayout
@@ -41,7 +43,7 @@
 
         <dji.ux.widget.PreFlightStatusWidget
             android:id="@+id/status"
-            android:layout_width="238dp"
+            android:layout_width="230dp"
             android:layout_height="25dp"/>
 
         <dji.ux.widget.FlightModeWidget
@@ -77,6 +79,17 @@
             android:layout_marginTop="3dp"
             android:layout_width="18dp"
             android:layout_height="18dp"/>
+
+        <!-- SIGNAL_READY2 -->
+        <TextView
+            android:id="@+id/tv_RTKConnect"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="RTK连接"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:textColor="@color/white_80_percent"/>
+
     </LinearLayout>
 
     <!-- 相机参数组件显示栏：白平衡、变焦等 -->
@@ -162,16 +175,16 @@
             android:layout_width="100dp"
             android:layout_height="32dp"
             android:layout_marginStart="5dp"
-            android:layout_marginTop="-8dp"
+            android:layout_marginTop="-7dp"
             android:textColor="@color/white_80_percent"/>
         <TextView
             android:id="@+id/tv_status1"
             android:text="@string/tv_status1_chEncode"
             android:textSize="19sp"
-            android:layout_width="75dp"
+            android:layout_width="110dp"
             android:layout_height="32dp"
             android:layout_marginLeft="1dp"
-            android:layout_marginTop="-8dp"
+            android:layout_marginTop="-7dp"
             android:textColor="@color/white_80_percent"/>
         <TextView
             android:id="@+id/tv_title2"
@@ -180,31 +193,31 @@
             android:layout_width="100dp"
             android:layout_height="32dp"
             android:layout_marginLeft="5dp"
-            android:layout_marginTop="-8dp"
+            android:layout_marginTop="-7dp"
             android:textColor="@color/white_80_percent"/>
         <TextView
             android:id="@+id/tv_status2"
             android:text="@string/tv_status2_chEncode"
             android:textSize="19sp"
-            android:layout_width="75dp"
+            android:layout_width="100dp"
             android:layout_height="32dp"
             android:layout_marginLeft="1dp"
-            android:layout_marginTop="-8dp"
+            android:layout_marginTop="-7dp"
             android:textColor="@color/white_80_percent"/>
         <TextView
             android:id="@+id/tv_title3"
             android:text="@string/tv_title3_chEncode"
             android:textSize="19sp"
-            android:layout_width="75dp"
+            android:layout_width="120dp"
             android:layout_height="32dp"
-            android:layout_marginLeft="-308dp"
+            android:layout_marginLeft="-418dp"
             android:layout_marginTop="30dp"
             android:textColor="@color/white_80_percent"/>
         <TextView
             android:id="@+id/tv_status3"
             android:text="@string/tv_status3_chEncode"
             android:textSize="19sp"
-            android:layout_width="75dp"
+            android:layout_width="90dp"
             android:layout_height="32dp"
             android:layout_marginLeft="1dp"
             android:layout_marginTop="30dp"
@@ -213,7 +226,7 @@
             android:id="@+id/tv_title4"
             android:text="@string/tv_title4_chEncode"
             android:textSize="19sp"
-            android:layout_width="75dp"
+            android:layout_width="100dp"
             android:layout_height="32dp"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="30dp"
@@ -222,25 +235,35 @@
             android:id="@+id/tv_status4"
             android:text="@string/tv_status4_chEncode"
             android:textSize="19sp"
-            android:layout_width="75dp"
+            android:layout_width="100dp"
             android:layout_height="32dp"
             android:layout_marginLeft="1dp"
+            android:layout_marginTop="30dp"
+            android:textColor="@color/white_80_percent"/>
+        <!-- SIGNAL_READY20 -->
+        <TextView
+            android:id="@+id/tv_current_rtk_status"
+            android:text="RTK未初始化完全"
+            android:textSize="17sp"
+            android:layout_width="150dp"
+            android:layout_height="32dp"
+            android:layout_marginLeft="0dp"
             android:layout_marginTop="30dp"
             android:textColor="@color/white_80_percent"/>
         <TextView
             android:id="@+id/tv_title5"
             android:text="@string/tv_title5_chEncode"
             android:textSize="19sp"
-            android:layout_width="75dp"
+            android:layout_width="120dp"
             android:layout_height="32dp"
-            android:layout_marginStart="-308dp"
+            android:layout_marginStart="-570dp"
             android:layout_marginTop="65dp"
             android:textColor="@color/white_80_percent"/>
         <TextView
             android:id="@+id/tv_status5"
             android:text="@string/tv_status5_chEncode"
             android:textSize="19sp"
-            android:layout_width="75dp"
+            android:layout_width="90dp"
             android:layout_height="32dp"
             android:layout_marginLeft="1dp"
             android:layout_marginTop="65dp"
@@ -249,7 +272,7 @@
             android:id="@+id/tv_title6"
             android:text="@string/tv_title6_chEncode"
             android:textSize="19sp"
-            android:layout_width="75dp"
+            android:layout_width="100dp"
             android:layout_height="32dp"
             android:layout_marginStart="5dp"
             android:layout_marginTop="65dp"
@@ -258,7 +281,25 @@
             android:id="@+id/tv_status6"
             android:text="@string/tv_status6_chEncode"
             android:textSize="19sp"
-            android:layout_width="75dp"
+            android:layout_width="90dp"
+            android:layout_height="32dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginTop="65dp"
+            android:textColor="@color/white_80_percent"/>
+        <TextView
+            android:id="@+id/tv_title7"
+            android:text="@string/tv_title7_chEncode"
+            android:textSize="19sp"
+            android:layout_width="70dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="65dp"
+            android:textColor="@color/white_80_percent"/>
+        <TextView
+            android:id="@+id/tv_status7"
+            android:text="@string/tv_status7_chEncode"
+            android:textSize="19sp"
+            android:layout_width="50dp"
             android:layout_height="32dp"
             android:layout_marginLeft="1dp"
             android:layout_marginTop="65dp"
@@ -270,7 +311,7 @@
     <!--基础状态按钮 -->
     <LinearLayout
         android:layout_width="72dp"
-        android:layout_height="196dp"
+        android:layout_height="200dp"
         android:layout_centerVertical="true"
         android:layout_marginStart="12dp"
         android:orientation="vertical">
@@ -291,17 +332,18 @@
             android:layout_height="35dp"
             android:layout_marginBottom="15dp"
             android:background="#FAFFF0"
-            android:text="通信"
+            android:text="通信页面"
             android:textColor="#292421"
             android:textSize="17sp" />
 
+        <!-- SIGNAL_READY2 -->
         <Button
-            android:id="@+id/btn_takeoff"
+            android:id="@+id/btn_send_command"
             android:layout_width="72dp"
             android:layout_height="35dp"
             android:layout_marginBottom="15dp"
             android:background="#FAFFF0"
-            android:text="起飞"
+            android:text="指令发送"
             android:textColor="#292421"
             android:textSize="17sp" />
 
@@ -311,7 +353,7 @@
             android:layout_height="35dp"
             android:layout_marginBottom="40dp"
             android:background="#FAFFF0"
-            android:text="中断"
+            android:text="紧急中断"
             android:textColor="#292421"
             android:textSize="17sp" />
 
@@ -322,41 +364,98 @@
             android:layout_marginTop="12dp"/-->
     </LinearLayout>
 
-    <!-- 中间选择叶片的三个隐藏按钮-->
     <LinearLayout
-        android:layout_width="250dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="230dp"
-        android:layout_marginTop="220dp"
+        android:layout_marginStart="170dp"
+        android:layout_marginTop="120dp"
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/btn_blade1"
+            android:id="@+id/btn_rtke1"
             android:layout_width="72dp"
             android:layout_height="50dp"
-            android:text="C1"
+            android:text="RTK1"
             android:textSize="17sp"
+            android:enabled="true"
+            android:textColor="#292421"
+            android:layout_marginRight="12dp" />
+        <Button
+            android:id="@+id/btn_rtke2"
+            android:layout_width="72dp"
+            android:layout_height="50dp"
+            android:text="RTK2"
+            android:textSize="17sp"
+            android:enabled="true"
+            android:textColor="#292410"
+            android:layout_marginRight="15dp"/>
+        <Button
+            android:id="@+id/btn_rtke3"
+            android:layout_width="72dp"
+            android:layout_height="50dp"
+            android:text="RTK3"
+            android:textSize="17sp"
+            android:enabled="true"
             android:textColor="#292421"
             android:layout_marginRight="12dp"/>
         <Button
-            android:id="@+id/btn_blade2"
+            android:id="@+id/btn_rtke4"
             android:layout_width="72dp"
             android:layout_height="50dp"
-            android:text="C2"
-            android:textSize="17sp"
-            android:textColor="#292421"
-            android:layout_marginRight="15dp"/>
-        <Button
-            android:id="@+id/btn_blade3"
-            android:layout_width="72dp"
-            android:layout_height="50dp"
-            android:text="C3"
+            android:text="RTK4"
+            android:enabled="true"
             android:textSize="17sp"
             android:textColor="#292421"
             android:layout_marginRight="12dp"/>
 
     </LinearLayout>
 
+
+    <!-- 单面巡检-间选择叶片的三个隐藏按钮-->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="170dp"
+        android:layout_marginTop="220dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_blade1"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:text="启动节点"
+            android:textSize="17sp"
+            android:textColor="#292421"
+            android:layout_marginRight="12dp"/>
+        <Button
+            android:id="@+id/btn_blade2"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:text="选择参数"
+            android:textSize="17sp"
+            android:textColor="#292421"
+            android:layout_marginRight="15dp"/>
+        <Button
+            android:id="@+id/btn_blade3"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:text="一键起飞"
+            android:textSize="17sp"
+            android:textColor="#292421"
+            android:layout_marginRight="12dp"/>
+
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/suffix_btn"
+        android:layout_width="65dp"
+        android:layout_height="45dp"
+        android:layout_alignParentRight="true"
+        android:text="记录"
+        android:gravity="center"
+        android:layout_marginTop="30dp"
+        android:textSize="16sp" />
 
     <dji.ux.widget.controls.CameraControlsWidget
         android:id="@+id/CameraCapturePanel"
@@ -390,12 +489,22 @@
 
     <Button
         android:id="@+id/btn_mediaManager"
-        android:layout_width="38dp"
-        android:layout_height="30dp"
+        android:layout_width="50dp"
+        android:layout_height="35dp"
         android:layout_alignStart="@+id/CameraCapturePanel"
         android:layout_below="@id/CameraCapturePanel"
         android:background="@drawable/playback"
         android:visibility="visible" />
+
+    <Button
+        android:id="@+id/btn_recording_photo"
+        android:layout_width="70dp"
+        android:layout_height="50dp"
+        android:text="拍照"
+        android:textSize="17sp"
+        android:textColor="#292421"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"/>
 
     <!-- Pre-flight checklist panel -->
     <dji.ux.panel.PreFlightCheckListPanel

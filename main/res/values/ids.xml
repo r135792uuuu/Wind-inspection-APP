@@ -2,11 +2,15 @@
 <resources>
     <!-- 按钮 -->
     <item name="btn_mop" type="id" />
-    <item name="btn_takeoff" type="id" />
+    <item name="btn_send_command" type="id" />
     <item name="btn_pause" type="id" />
     <item name="btn_blade1" type="id" />
     <item name="btn_blade2" type="id" />
     <item name="btn_blade3" type="id" />
+    <item name="btn_rtke1" type="id" />
+    <item name="btn_rtke2" type="id" />
+    <item name="btn_rtke3" type="id" />
+    <item name="btn_rtke4" type="id" />
     <!-- 需要显示的状态数据-->
     <item name="tv_title1" type="id" />
     <item name="tv_status1" type="id" />

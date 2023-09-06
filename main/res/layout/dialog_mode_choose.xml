@@ -6,28 +6,96 @@
 
     <RadioGroup
         android:id="@+id/group_file1"
-        android:layout_width="120dp"
-        android:layout_height="wrap_content">
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <!--SIGNAL_READY23 -->
+        <!--SIGNAL_READY25全部重构 -->
 
         <RadioButton
             android:id="@+id/mode_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="单面巡检"
+            android:text="前缘"
             android:textSize="20sp" />
 
         <RadioButton
             android:id="@+id/mode_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="双面巡检"
+            android:text="后缘"
             android:textSize="20sp" />
 
         <RadioButton
             android:id="@+id/mode_3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="四面巡检"
+            android:text="迎风"
+            android:textSize="20sp" />
+
+        <RadioButton
+            android:id="@+id/mode_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="背风"
+            android:textSize="20sp" />
+        <RadioButton
+            android:id="@+id/mode_6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="双面"
+            android:textSize="20sp" />
+
+        <RadioButton
+            android:id="@+id/mode_8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="全覆盖"
             android:textSize="20sp" />
     </RadioGroup>
+
+    <RadioGroup
+        android:id="@+id/group_file6"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <RadioButton
+            android:id="@+id/mode_9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="按叶片录频"
+            android:textSize="20sp" />
+
+        <RadioButton
+            android:id="@+id/mode_10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="按巡检面录频"
+            android:textSize="20sp" />
+    </RadioGroup>
+
+    <RadioGroup
+        android:id="@+id/group_file7"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <RadioButton
+            android:id="@+id/mode_11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="自动EV"
+            android:textSize="20sp" />
+
+        <RadioButton
+            android:id="@+id/mode_12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="手动EV"
+            android:textSize="20sp" />
+    </RadioGroup>
+
+
 </LinearLayout>

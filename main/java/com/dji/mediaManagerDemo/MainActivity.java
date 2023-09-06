@@ -7,6 +7,9 @@ import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +42,7 @@ import dji.common.product.Model;
 import dji.common.util.CommonCallbacks;
 import dji.log.DJILog;
 import dji.sdk.base.BaseProduct;
+import dji.sdk.camera.Camera;
 import dji.sdk.media.DownloadListener;
 import dji.sdk.media.FetchMediaTask;
 import dji.sdk.media.FetchMediaTaskContent;
@@ -61,19 +65,29 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private ProgressDialog mLoadingDialog;
     private ProgressDialog mDownloadDialog;
     private SlidingDrawer mPushDrawerSd;
-    File destDir = new File(Environment.getExternalStorageDirectory().getPath() + "/MediaManagerDemo/");
+    File destDir = new File(Environment.getExternalStorageDirectory().getPath() + "/风机巡检媒体库/");
     private int currentProgress = -1;
     private ImageView mDisplayImageView;
     private int lastClickViewIndex =-1;
     private View lastClickView;
     private TextView mPushTv;
     private SettingsDefinitions.StorageLocation storageLocation;
+    private EditText bladeIDEt; //用SIGNAL_RENAME
+    private EditText bladePlanEt;
+    String bladeIDString = "";
+    String bladePlanString = "";
+    Integer bitmapIndexGlobal = 0; // 用来防呆 和 lastClickViewIndex
+    // SIGNAL_READY22
+    private Button mRenameBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Log.e("页面M oncreate", "准备initUI");
         initUI();
+        // SIGNAL_READY17
+        showToastLog("onResume","操作请注意：请同时点击右侧缩略图和左侧文本!!!", false);
         DemoApplication.getAircraftInstance().getCamera().setStorageStateCallBack(new StorageState.Callback() {
             @Override
             public void onUpdate(@NonNull @NotNull StorageState storageState) {
@@ -82,6 +96,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     DemoApplication.getAircraftInstance().getCamera().setStorageLocation(SettingsDefinitions.StorageLocation.SDCARD, new CommonCallbacks.CompletionCallback() {
                         @Override
                         public void onResult(DJIError djiError) {
+                            if (djiError == null) {
+                                Log.e("页面M oncreate", "设置为SD卡");
+                            }
+                            else {
+                                //Log.e("页面M oncreate", "SD 错误码:" + djiError.getDescription());
+                            }
                         }
                     });
                 } else {
@@ -89,16 +109,25 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     DemoApplication.getAircraftInstance().getCamera().setStorageLocation(SettingsDefinitions.StorageLocation.INTERNAL_STORAGE, new CommonCallbacks.CompletionCallback() {
                         @Override
                         public void onResult(DJIError djiError) {
+                            if (djiError == null) {
+                                Log.e("页面M oncreate", "内部无储存位置，请插入SD卡");
+                            }
+                            else {
+                                //Log.e("页面M oncreate", "内部储存错误码:" + djiError.getDescription());
+                            }
                         }
                     });
                 }
             }
         });
+        Log.e("页面M oncreate", "设置储存位置完成");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        // SIGNAL_READY6
+        //showToastLog("onResume","操作请注意：请同时点击右侧缩略图和左侧文本!!!", true);
         initMediaManager();
     }
 
@@ -151,6 +180,18 @@ public class MainActivity extends Activity implements View.OnClickListener {
         super.onDestroy();
     }
 
+    // 用SIGNAL_RENAME表示
+    private void showToastLog(final String tag, final String description, boolean isRunToast) {
+        Log.e("页面M: " + tag, description);
+        if (isRunToast) {
+            runOnUiThread(new Runnable() {
+                public void run() {
+                    Toast.makeText(MainActivity.this, description, Toast.LENGTH_SHORT).show();  // 显示2s  long时3.5s
+                }
+            });
+        }
+    }
+
     void initUI() {
 
         //Init RecyclerView
@@ -164,17 +205,18 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         //Init Loading Dialog
         mLoadingDialog = new ProgressDialog(MainActivity.this);
-        mLoadingDialog.setMessage("Please wait");
-        mLoadingDialog.setCanceledOnTouchOutside(false);
-        mLoadingDialog.setCancelable(false);
+        mLoadingDialog.setMessage("请等待");
+        // SIGNAL_READY14 测试
+        mLoadingDialog.setCanceledOnTouchOutside(true);
+        mLoadingDialog.setCancelable(true);
 
         //Init Download Dialog
         mDownloadDialog = new ProgressDialog(MainActivity.this);
-        mDownloadDialog.setTitle("Downloading file");
+        mDownloadDialog.setTitle("下载文件中");
         mDownloadDialog.setIcon(android.R.drawable.ic_dialog_info);
         mDownloadDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         mDownloadDialog.setCanceledOnTouchOutside(false);
-        mDownloadDialog.setCancelable(true);
+        mDownloadDialog.setCancelable(false);
         mDownloadDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
@@ -199,24 +241,72 @@ public class MainActivity extends Activity implements View.OnClickListener {
         mDisplayImageView = (ImageView) findViewById(R.id.imageView);
         mDisplayImageView.setVisibility(View.VISIBLE);
 
+        // SIGNAL_READY22 测试
+//        mRenameBtn = (Button) findViewById(R.id.rename_btn);
+//        mRenameBtn.setOnClickListener(this);
+
         mBackBtn.setOnClickListener(this);
         mDeleteBtn.setOnClickListener(this);
         mDownloadBtn.setOnClickListener(this);
         mReloadBtn.setOnClickListener(this);
-        mDownloadBtn.setOnClickListener(this);
         mStatusBtn.setOnClickListener(this);
         mPlayBtn.setOnClickListener(this);
         mResumeBtn.setOnClickListener(this);
         mPauseBtn.setOnClickListener(this);
         mStopBtn.setOnClickListener(this);
         mMoveToBtn.setOnClickListener(this);
+        //SIGNAL_RENAME
+        initRenameEditText();
 
     }
 
+    /** RENAME_SIGNAL
+     * 初始化两个重命名规则的editText
+     */
+    private void initRenameEditText() {
+        //用SIGNAL_RENAME
+        // TODO addTextChangedListener  文本改变监视器什么作用？
+        bladeIDEt = (EditText) findViewById(R.id.rename_blade_id_et);
+        bladeIDEt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                bladeIDString = s.toString();
+            }
+        });
+
+        bladePlanEt = (EditText) findViewById(R.id.rename_blade_plan_et);
+        bladePlanEt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                bladePlanString = s.toString();
+            }
+        });
+    }
+
+    /**
+     * 偶尔会出现堵转问题，堵在UI线程中 需要清理SD卡才行
+     */
     private void showProgressDialog() {
         runOnUiThread(new Runnable() {
             public void run() {
                 if (mLoadingDialog != null) {
+                    Log.e("页面M hideProgressDialog","显示加载列表");
                     mLoadingDialog.show();
                 }
             }
@@ -227,6 +317,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         runOnUiThread(new Runnable() {
             public void run() {
                 if (null != mLoadingDialog && mLoadingDialog.isShowing()) {
+                    Log.e("页面M hideProgressDialog","隐藏加载列表");
                     mLoadingDialog.dismiss();
                 }
             }
@@ -254,6 +345,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }
     }
 
+    /**
+     * 不如用我的showToastLog
+     * @param result
+     */
     private void setResultToToast(final String result) {
         runOnUiThread(new Runnable() {
             public void run() {
@@ -264,7 +359,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     private void setResultToText(final String string) {
         if (mPushTv == null) {
-            setResultToToast("Push info tv has not be init...");
+            setResultToToast("信息没有加载好，请稍后...");
         }
         MainActivity.this.runOnUiThread(new Runnable() {
             @Override
@@ -275,24 +370,39 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
     private void initMediaManager() {
+        Log.e("页面M initMediaManager", "进入initMediaManager");
         if (DemoApplication.getProductInstance() == null) {
             mediaFileList.clear();
             mListAdapter.notifyDataSetChanged();
             DJILog.e(TAG, "Product disconnected");
             return;
         } else {
+            Log.e("页面M initMediaManager", "实例存在");
             if (null != DemoApplication.getCameraInstance() && DemoApplication.getCameraInstance().isMediaDownloadModeSupported()) {
+                Log.e("页面M initMediaManager", "创建mMediaManager");
                 mMediaManager = DemoApplication.getCameraInstance().getMediaManager();
                 if (null != mMediaManager) {
+                    Log.e("页面M initMediaManager", "创建mMediaManager成功");
                     mMediaManager.addUpdateFileListStateListener(this.updateFileListStateListener);
                     mMediaManager.addMediaUpdatedVideoPlaybackStateListener(this.updatedVideoPlaybackStateListener);
                     if (isMavicAir2() || isAir2S() || isM300()) {
                         DemoApplication.getCameraInstance().enterPlayback(djiError -> {
+                            // TODO 这里如果出bug，会导致耗时很长一直卡在upload界面
+                            // 问题是getFileList执行了 show才执行
+
                             if (djiError == null) {
                                 DJILog.e(TAG, "Set cameraMode success");
+                                Log.e("页面M initMediaManager111", "Set cameraMode success");
                                 showProgressDialog();
+                                // SIGNAL_READY14 加入等到，等待进入播放模式再刷新列表
+                                try {
+                                    Thread.sleep(1000);
+                                } catch (InterruptedException e) {
+                                    throw new RuntimeException(e);
+                                }
                                 getFileList();
                             } else {
+                                Log.e("页面M initMediaManager222", "Set cameraMode failed");
                                 setResultToToast("Set cameraMode failed");
                             }
                         });
@@ -300,6 +410,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                         DemoApplication.getCameraInstance().setMode(SettingsDefinitions.CameraMode.MEDIA_DOWNLOAD, error -> {
                             if (error == null) {
                                 DJILog.e(TAG, "Set cameraMode success");
+                                Log.e("页面M initMediaManager333", "Set cameraMode success");
                                 showProgressDialog();
                                 getFileList();
                             } else {
@@ -318,6 +429,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
             } else if (null != DemoApplication.getCameraInstance()
                     && !DemoApplication.getCameraInstance().isMediaDownloadModeSupported()) {
+                Log.e("initMediaManager", "Media Download Mode not Supported");
                 setResultToToast("Media Download Mode not Supported");
             }
         }
@@ -325,14 +437,17 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
     private void getFileList() {
+        Log.e("页面M getFileList","进入");
         mMediaManager = DemoApplication.getCameraInstance().getMediaManager();
         if (mMediaManager != null) {
-
             if ((currentFileListState == MediaManager.FileListState.SYNCING) || (currentFileListState == MediaManager.FileListState.DELETING)){
-                DJILog.e(TAG, "Media Manager is busy.");
-            }else{
+                Log.e("页面M getFileList","Media Manager is busy.");
+                showToastLog("getFileList", "正在同步状态，请缓慢操作...",true);
+            } else{
+                Log.e("页面M getFileList","状态正确，准备刷新文件列表");
                 mMediaManager.refreshFileListOfStorageLocation(storageLocation, djiError -> {
                     if (null == djiError) {
+                        Log.e("页面M getFileList","进入刷新文件储存列表");
                         hideProgressDialog();
 
                         //Reset data
@@ -368,16 +483,22 @@ public class MainActivity extends Activity implements View.OnClickListener {
                         });
                     } else {
                         hideProgressDialog();
+                        Log.e("页面M getFileList","文件储存列表刷新失败:" + djiError.getDescription());
                         setResultToToast("Get Media File List Failed:" + djiError.getDescription());
                     }
                 });
+                Log.e("页面M getFileList","刷新文件列表后面SIGANL");
             }
+            return;
+        }
+        else {
+            Log.e("页面M getFileList", "mMediaManager为空，直接跳过了");
         }
     }
 
     private void getThumbnails() {
         if (mediaFileList.size() <= 0) {
-            setResultToToast("No File info for downloading thumbnails");
+            setResultToToast("当前列表没有文件");
             return;
         }
         for (int i = 0; i < mediaFileList.size(); i++) {
@@ -448,6 +569,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         @Override
         public void onBindViewHolder(ItemHolder mItemHolder, final int index) {
+            //Log.e("页面M onBindViewHolder", "选择的index:" + index);
+
+            //用SIGNAL_RENAME SIGNAL_READY6 发现这是个bug
+            //bitmapIndexGlobal = mItemHolder.getAdapterPosition();
 
             final MediaFile mediaFile = mediaFileList.get(index);
             if (mediaFile != null) {
@@ -466,8 +591,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 mItemHolder.itemView.setTag(index);
 
                 if (lastClickViewIndex == index) {
+                    Log.e("页面M onBindViewHolder", "选中index = lastClickViewIndex");
                     mItemHolder.itemView.setSelected(true);
                 } else {
+                    //Log.e("页面M onBindViewHolder", "lastClickViewIndex:" + lastClickViewIndex);
                     mItemHolder.itemView.setSelected(false);
                 }
                 mItemHolder.itemView.setOnClickListener(itemViewOnClickListener);
@@ -480,6 +607,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         @Override
         public void onClick(View v) {
             lastClickViewIndex = (int) (v.getTag());
+            Log.e("页面M 文本点击事件", "关注！：点击文本的index值:" + lastClickViewIndex);
 
             if (lastClickView != null && lastClickView != v) {
                 lastClickView.setSelected(false);
@@ -544,28 +672,32 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 }
             };
 
+    /**
+     *
+     * @param videoPlaybackState
+     */
     private void updateStatusTextView(MediaManager.VideoPlaybackState videoPlaybackState) {
         final StringBuffer pushInfo = new StringBuffer();
 
-        addLineToSB(pushInfo, "Video Playback State", null);
+        addLineToSB(pushInfo, "视频播放状态栏(播放后查看)", null);
         if (videoPlaybackState != null) {
             if (videoPlaybackState.getPlayingMediaFile() != null) {
-                addLineToSB(pushInfo, "media index", videoPlaybackState.getPlayingMediaFile().getIndex());
-                addLineToSB(pushInfo, "media size", videoPlaybackState.getPlayingMediaFile().getFileSize());
+                addLineToSB(pushInfo, "视频内存序号", videoPlaybackState.getPlayingMediaFile().getIndex());
+                addLineToSB(pushInfo, "视频大小(bytes)", videoPlaybackState.getPlayingMediaFile().getFileSize());
                 addLineToSB(pushInfo,
-                        "media duration",
+                        "视频时长(s)",
                         videoPlaybackState.getPlayingMediaFile().getDurationInSeconds());
-                addLineToSB(pushInfo, "media created date", videoPlaybackState.getPlayingMediaFile().getDateCreated());
+                addLineToSB(pushInfo, "视频创建日期", videoPlaybackState.getPlayingMediaFile().getDateCreated());
                 addLineToSB(pushInfo,
-                        "media orientation",
+                        "视频朝向",
                         videoPlaybackState.getPlayingMediaFile().getVideoOrientation());
             } else {
-                addLineToSB(pushInfo, "media index", "None");
+                addLineToSB(pushInfo, "视频序号", "None");
             }
-            addLineToSB(pushInfo, "media current position", videoPlaybackState.getPlayingPosition());
-            addLineToSB(pushInfo, "media current status", videoPlaybackState.getPlaybackStatus());
-            addLineToSB(pushInfo, "media cached percentage", videoPlaybackState.getCachedPercentage());
-            addLineToSB(pushInfo, "media cached position", videoPlaybackState.getCachedPosition());
+            addLineToSB(pushInfo, "视频当前播放位置", videoPlaybackState.getPlayingPosition());
+            addLineToSB(pushInfo, "视频当前状态", videoPlaybackState.getPlaybackStatus());
+            addLineToSB(pushInfo, "视频完整度", videoPlaybackState.getCachedPercentage());
+            addLineToSB(pushInfo, "视频暂存位置", videoPlaybackState.getCachedPosition());
             pushInfo.append("\n");
             setResultToText(pushInfo.toString());
         }
@@ -580,16 +712,31 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
     private void downloadFileByIndex(final int index){
+        if (index < 0 || index >= mediaFileList.size()) {
+            // 索引值无效，不执行任何操作
+            Log.e("页面M 下载文件函数","负数索引");
+            setResultToToast("请点击图片右侧的文字部分！");
+            return;
+        }
         if ((mediaFileList.get(index).getMediaType() == MediaFile.MediaType.PANORAMA)
                 || (mediaFileList.get(index).getMediaType() == MediaFile.MediaType.SHALLOW_FOCUS)) {
             return;
         }
-
+        if (bladePlanString == null || bladeIDString == null) {
+            showToastLog("下载函数","请在右侧输入想要保存的名字再下载!", true);
+            return;
+        }
+        showToastLog("下载函数","文件位置"+destDir.toString(), false);
+        // TODO 叶片编号+叶片位置 考虑用intent传数据或者静态变量拿到传过来的数据 SIGNAL_READY
+        // SIGNAL_READY22 暂时注释 测试名字
+        //String fileName = bladeIDString + "-" + bladePlanString;
+        //showToastLog("下载函数","将要保存的文件名字是："+ fileName, true);
+        // mediaFileList.get(index).fetchFileData(destDir, fileName, new DownloadListener<String>()
         mediaFileList.get(index).fetchFileData(destDir, null, new DownloadListener<String>() {
             @Override
             public void onFailure(DJIError error) {
                 HideDownloadProgressDialog();
-                setResultToToast("Download File Failed" + error.getDescription());
+                setResultToToast("文件下载失败" + error.getDescription());
                 currentProgress = -1;
             }
 
@@ -620,20 +767,29 @@ public class MainActivity extends Activity implements View.OnClickListener {
             @Override
             public void onSuccess(String filePath) {
                 HideDownloadProgressDialog();
-                setResultToToast("Download File Success" + ":" + filePath);
+                setResultToToast("下载成功,路径为" + ":" + filePath);
                 currentProgress = -1;
+                // SIGNAL_READY8
+                getFileList();
             }
         });
     }
 
     private void deleteFileByIndex(final int index) {
+        if (index < 0 || index >= mediaFileList.size()) {
+            // 索引值无效，不执行删除操作
+            Log.e("页面M 删除文件函数","负数索引，mediaFileList大小："+ mediaFileList.size());
+            setResultToToast("请点击图片右侧文字部分！");
+            return;
+        }
+
         ArrayList<MediaFile> fileToDelete = new ArrayList<MediaFile>();
         if (mediaFileList.size() > index) {
             fileToDelete.add(mediaFileList.get(index));
             mMediaManager.deleteFiles(fileToDelete, new CommonCallbacks.CompletionCallbackWithTwoParam<List<MediaFile>, DJICameraError>() {
                 @Override
                 public void onSuccess(List<MediaFile> x, DJICameraError y) {
-                    DJILog.e(TAG, "Delete file success");
+                    DJILog.e(TAG, "页面M 删除文件："+index);
                     runOnUiThread(new Runnable() {
                         public void run() {
                             MediaFile file = mediaFileList.remove(index);
@@ -644,8 +800,22 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
                             //Update recyclerView
                             mListAdapter.notifyItemRemoved(index);
+                            try { // SIGNAL_READY22 测试2
+                                Thread.sleep(200);
+                                // update SIGNAL_READY8
+                                getFileList();
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
                         }
                     });
+//                    try { // SIGNAL_READY22
+//                        Thread.sleep(500);
+//                        // update SIGNAL_READY8
+//                        getFileList();
+//                    } catch (InterruptedException e) {
+//                        throw new RuntimeException(e);
+//                    }
                 }
 
                 @Override
@@ -657,12 +827,23 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
     private void playVideo() {
+        if (lastClickViewIndex == -1) {
+            // 索引值无效
+            Log.e("页面M playVideo","负数索引，mediaFileList大小："+ mediaFileList.size());
+            setResultToToast("请点击视频，再点击右侧文字后再点击播放！");
+            return;
+        }
+        boolean image = isClickImage();
+        if (image) {
+            showToastLog("防呆函数2","你选中的类型不是视频数据！", true);
+            return;
+        }
         mDisplayImageView.setVisibility(View.INVISIBLE);
         MediaFile selectedMediaFile = mediaFileList.get(lastClickViewIndex);
         if ((selectedMediaFile.getMediaType() == MediaFile.MediaType.MOV) || (selectedMediaFile.getMediaType() == MediaFile.MediaType.MP4)) {
             mMediaManager.playVideoMediaFile(selectedMediaFile, error -> {
                 if (null != error) {
-                    setResultToToast("Play Video Failed " + error.getDescription());
+                    setResultToToast("视频播放失败 " + error.getDescription());
                 } else {
                     DJILog.e(TAG, "Play Video Success");
                 }
@@ -671,7 +852,17 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
     private void moveToPosition(){
-
+        if (lastClickViewIndex == -1) {
+            // 索引值无效
+            Log.e("页面M playVideo","负数索引，mediaFileList大小："+ mediaFileList.size());
+            setResultToToast("请点击视频，再点击右侧文字后再点击播放！");
+            return;
+        }
+        boolean image = isClickImage();
+        if (image) {
+            showToastLog("防呆函数2","你选中的类型不是视频数据！", true);
+            return;
+        }
         LayoutInflater li = LayoutInflater.from(this);
         View promptsView = li.inflate(R.layout.prompt_input_position, null);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
@@ -694,9 +885,88 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 .setNegativeButton("Cancel", (dialog, id) -> dialog.cancel());
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
+    }
+
+    /**
+     * SIGANL_READY22添加后缀
+     */
+    private void addMeidaSuffix() {
+//        if (lastClickViewIndex == -1) {
+//            // 索引值无效
+//            Log.e("页面M 加后缀","负数索引，mediaFileList大小："+ mediaFileList.size());
+//            setResultToToast("请点击对应媒体的文本框再运行！");
+//            return;
+//        }
+        //MediaFile selectedMediaFile = mediaFileList.get(lastClickViewIndex);
+        Camera camera = DemoApplication.getCameraInstance();
+//        camera.getCustomExpandFileName(new CommonCallbacks.CompletionCallbackWith<String>() {
+//            @Override
+//            public void onSuccess(String s) {
+//                showToastLog("addMeidaSuffix", "get success rename" +s, false);
+//            }
+//
+//            @Override
+//            public void onFailure(DJIError djiError) {
+//                showToastLog("addMeidaSuffix", "get rename fail"+djiError.getDescription(), false);
+//            }
+//        });
+        camera.setCustomExpandFileName("abbbbb", new CommonCallbacks.CompletionCallback() {
+            @Override
+            public void onResult(DJIError djiError) {
+                if (djiError == null) {
+                    showToastLog("addMeidaSuffix", "success rename", false);
+                } else {
+                    showToastLog("addMeidaSuffix", "Not rename: " + djiError.getDescription(), false);
+                }
+            }
+        });
+        //TODO selectedMediaFile.setFileName();
+        // TODO setMediaFileCustomInformation
+    }
+
+    /** SIGNAL_READY6  实现难度大 废弃了
+     * 容错机制和防呆判断 在每一个里面添加 使用方法：
+     * boolean equals = isIndexEqualsToLastClick();
+     *         if (!equals) {
+     *             showToastLog("防呆函数","请先点击缩略图，再点击右侧文本！", true);
+     *             return;
+     *         }
+     */
+    private boolean isIndexEqualsToLastClick() {
+        if (bitmapIndexGlobal != lastClickViewIndex) {
+            return false;
+        }
+        return true;
+    }
+
+    /** TODO
+     * SIGNAL_READY4 防呆函数2 检测因为过快点击导致的出现了两个蓝色选择区域导致的卡死
+     */
+    private void isDoubleQuickClick() {
 
     }
 
+    /**
+     * 防止把图片当作视频点击功能导致崩溃
+     * @return 是图片返回true
+     */
+    private boolean isClickImage() {
+        final MediaFile mediaFile = mediaFileList.get(bitmapIndexGlobal);
+        if (mediaFile != null) {
+            if (mediaFile.getMediaType() != MediaFile.MediaType.MOV
+                    && mediaFile.getMediaType() != MediaFile.MediaType.MP4) {
+                return true;
+            }
+        } else {
+            showToastLog("isClickImage", "获取mediaFile失败", false);
+        }
+        return false;
+    }
+
+    /**
+     * 这个v是itemView 文字信息 不是缩率图
+     * @param v The view that was clicked.
+     */
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -704,7 +974,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 this.finish();
                 break;
             }
-            case R.id.delete_btn:{
+            case R.id.delete_btn: {
                 deleteFileByIndex(lastClickViewIndex);
                 break;
             }
@@ -729,9 +999,14 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 break;
             }
             case R.id.resume_btn: {
+                boolean image = isClickImage();
+                if (image) {
+                    showToastLog("防呆函数2","你选中的类型不是视频数据！", true);
+                    break;
+                }
                 mMediaManager.resume(error -> {
                     if (null != error) {
-                        setResultToToast("Resume Video Failed" + error.getDescription());
+                        setResultToToast("视频恢复播放失败：" + error.getDescription());
                     } else {
                         DJILog.e(TAG, "Resume Video Success");
                     }
@@ -739,9 +1014,14 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 break;
             }
             case R.id.pause_btn: {
+                boolean image = isClickImage();
+                if (image) {
+                    showToastLog("防呆函数2","你选中的类型不是视频数据！", true);
+                    break;
+                }
                 mMediaManager.pause(error -> {
                     if (null != error) {
-                        setResultToToast("Pause Video Failed" + error.getDescription());
+                        setResultToToast("暂停视频播放失败：" + error.getDescription());
                     } else {
                         DJILog.e(TAG, "Pause Video Success");
                     }
@@ -749,9 +1029,14 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 break;
             }
             case R.id.stop_btn: {
+                boolean image = isClickImage();
+                if (image) {
+                    showToastLog("防呆函数2","你选中的类型不是视频数据！", true);
+                    break;
+                }
                 mMediaManager.stop(error -> {
                     if (null != error) {
-                        setResultToToast("Stop Video Failed" + error.getDescription());
+                        setResultToToast("停止视频播放失败：" + error.getDescription());
                     } else {
                         DJILog.e(TAG, "Stop Video Success");
                     }
@@ -762,6 +1047,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 moveToPosition();
                 break;
             }
+            // SIGNAL_READY22 测试用
+//            case R.id.rename_btn: {
+//                addMeidaSuffix();
+//                break;
+//            }
             default:
                 break;
         }

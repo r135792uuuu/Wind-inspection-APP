@@ -11,18 +11,20 @@
     <string name="hi_version">APP 版本: %1$s</string>
 
     <!-- 默认页面 -->
-    <string name="tv_title1_chEncode">速度:(m/s)</string>
+    <string name="tv_title1_chEncode">速度(m/s):</string>
     <string name="tv_status1_chEncode">0.0</string>
-    <string name="tv_title2_chEncode">测试参数:</string>
+    <string name="tv_title2_chEncode">RTK经度:</string>
     <string name="tv_status2_chEncode">0.0</string>
-    <string name="tv_title3_chEncode">参数3:</string>
+    <string name="tv_title3_chEncode">叶片距离(m):</string>
     <string name="tv_status3_chEncode">0.0</string>
-    <string name="tv_title4_chEncode">参数4:</string>
+    <string name="tv_title4_chEncode">RTK纬度:</string>
     <string name="tv_status4_chEncode">0.0</string>
-    <string name="tv_title5_chEncode">参数5:</string>
+    <string name="tv_title5_chEncode">云台角度(度):</string>
     <string name="tv_status5_chEncode">0.0</string>
-    <string name="tv_title6_chEncode">参数6:</string>
+    <string name="tv_title6_chEncode">RTK高度:</string>
     <string name="tv_status6_chEncode">0.0</string>
+    <string name="tv_title7_chEncode">焦距: </string>
+    <string name="tv_status7_chEncode">0</string>
 
     <!-- MOP 通道item页面-->
     <string name="tv_et_file_name">输入参数</string>

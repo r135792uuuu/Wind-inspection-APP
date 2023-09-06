@@ -228,6 +228,8 @@ public class ConnectionActivity extends Activity implements View.OnClickListener
         Log.e(TAG, "onResume");
         super.onResume();
         updateTitleBar();
+        // SIGBAL_READY13
+        //refreshSDKRelativeUI(); // SIGNAL_READY2
     }
 
     @Override
@@ -308,7 +310,7 @@ public class ConnectionActivity extends Activity implements View.OnClickListener
                     Aircraft aircraft = (Aircraft)product;
                     if(aircraft.getRemoteController() != null && aircraft.getRemoteController().isConnected()) {
                         // The product is not connected, but the remote controller is connected
-                        showToast("仅遥控器连接");
+                        showToast("仅遥控器连接，请开启飞机电源");
                         ret = true;
                     }
                 }
@@ -370,12 +372,16 @@ public class ConnectionActivity extends Activity implements View.OnClickListener
     }
 
     private void loginAccount(){
+        //showToast("请登录大疆账号使用RTK功能"); // SIGNAL_READY2
+        // SIGNAL_READY15
+        Log.e(TAG,"页面C 请登录大疆账号使用RTK功能");
         UserAccountManager.getInstance().logIntoDJIUserAccount(this,
                 new CommonCallbacks.CompletionCallbackWith<UserAccountState>() {
                     @Override
                     public void onSuccess(final UserAccountState userAccountState) {
-                        Log.e(TAG, "登录成功");
-                        showToast("登录账号成功!");
+                        // SIGNAL_READY17
+                        Log.e(TAG, "页面C 登录成功");
+                        //showToast("登录DJI账号成功!");
                     }
                     @Override
                     public void onFailure(DJIError error) {

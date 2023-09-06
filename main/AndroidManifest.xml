@@ -52,7 +52,8 @@
             android:name=".ConnectionActivity"
             android:configChanges="orientation"
             android:launchMode="singleTop"
-            android:screenOrientation="landscape">
+            android:screenOrientation="landscape"
+            android:exported="true"> <!-- SIGNAL_READY17 -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -72,6 +73,9 @@
             android:screenOrientation="landscape" />
         <activity
             android:name=".MainActivity"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".PureZoomActivity"
             android:screenOrientation="landscape" />
         <activity
             android:name=".MOPSampleActivity"
